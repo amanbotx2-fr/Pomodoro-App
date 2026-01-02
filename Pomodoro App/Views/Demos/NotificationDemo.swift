@@ -28,7 +28,10 @@ struct NotificationDemo: View {
                 VStack {
                     Text("Notifications are disabled")
                     Button("Enable") {
-                        // later: open settings
+                        DispatchQueue.main.async{
+                            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+                        }
+                        
                     }
                 }
             }
