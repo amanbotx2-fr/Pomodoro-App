@@ -17,7 +17,6 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
-                    // Work Duration
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Work Duration")
                             .font(.headline)
@@ -36,7 +35,6 @@ struct SettingsView: View {
                     }
                     .padding(.vertical, 4)
                     
-                    // Break Duration
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Break Duration")
                             .font(.headline)

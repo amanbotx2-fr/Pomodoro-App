@@ -18,10 +18,8 @@ struct CircleButton: View {
 
     var body: some View {
         Button(action: {
-            // Haptic feedback
             let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
             impactFeedback.impactOccurred()
-            
             action()
         }) {
             Image(systemName: icon)

@@ -24,14 +24,17 @@ class PomodoroAudio {
     private var audioPlayer: AVAudioPlayer?
 
     func play(_ sound: PomodoroAudioSounds) {
-        let path = Bundle.main.path(forResource: sound.resource, ofType: nil)!
+        guard let path = Bundle.main.path(forResource: sound.resource, ofType: nil) else {
+            return
+        }
+        
         let url = URL(fileURLWithPath: path)
 
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.play()
         } catch {
-            print(error.localizedDescription)
+            print("Failed to play audio: \(error.localizedDescription)")
         }
     }
 }

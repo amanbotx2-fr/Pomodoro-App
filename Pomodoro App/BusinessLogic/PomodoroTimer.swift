@@ -30,13 +30,6 @@ enum PomodoroTimerMode: String {
 
 @Observable
 class PomodoroTimer {
-  // timer -> tick every second
-  // properties -> how many seconds left / passed
-  //            -> fraction 0-1
-  //            -> String ... 10:42
-  // methods -> play, pause, resume, reset, skip
-  // helper functions
-  
   private var _mode: PomodoroTimerMode = .work
   private var _state: PomodoroTimerState = .idle
   
@@ -57,7 +50,7 @@ class PomodoroTimer {
     _durationBreak = breakInSeconds
   }
   
-  // MARK: Computed Properties
+  // MARK: - Public Properties
   var secondsPassed: Int {
     return _secondsPassed
   }
@@ -94,7 +87,7 @@ class PomodoroTimer {
   }
   
   
-  // MARK: Public Methods
+  // MARK: - Timer Controls
   func start() {
     _dateStarted = Date.now
     _secondsPassed = 0
@@ -127,8 +120,8 @@ class PomodoroTimer {
     }
   }
   
-  // Update durations (only allowed when idle)
   func updateDurations(workInSeconds: TimeInterval, breakInSeconds: TimeInterval) {
+    // Only allow duration changes when timer is idle to avoid confusion
     guard _state == .idle else { return }
     _durationWork = workInSeconds
     _durationBreak = breakInSeconds
@@ -137,11 +130,10 @@ class PomodoroTimer {
   }
   
   
-  // MARK: private methods
+  // MARK: - Private Helpers
   private func _createTimer() {
-    // schedule notification
     PomodoroNotification.scheduleNotification(seconds: TimeInterval(secondsLeft), title: "Timer Done", body: "Your pomodoro timer is finished.")
-    // create timer
+    
     _timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
       self._onTick()
     }
@@ -153,20 +145,19 @@ class PomodoroTimer {
   }
   
   private func _onTick() {
-    // calculate the seconds since start date
     let secondsSinceStartDate = Date.now.timeIntervalSince(self._dateStarted)
-    // add the seconds before paused (if any)
     self._secondsPassed = Int(secondsSinceStartDate) + self._secondsPassedBeforePause
-    // calculate fraction
     self._fractionPassed = TimeInterval(self._secondsPassed) / self._duration
-    // play tick
-//    _audio.play(.tick)
-    // done? play sound, reset, switch (work->pause->work), reset timer
+    
+    // Tick sound disabled - uncomment if you want it
+    // _audio.play(.tick)
+    
+    // Timer finished - switch modes and play completion sound
     if self.secondsLeft == 0 {
       self._fractionPassed = 0
-      self.skip() // to switch mode
-      self.reset() // also resets timer
-      _audio.play(.done) // play ending sound
+      self.skip()
+      self.reset()
+      _audio.play(.done)
     }
   }
   

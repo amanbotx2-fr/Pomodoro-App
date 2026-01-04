@@ -11,9 +11,8 @@ class PomodoroSettings {
     private static let workDurationKey = "pomodoro_work_duration"
     private static let breakDurationKey = "pomodoro_break_duration"
     
-    // Default values (in seconds)
-    static let defaultWorkDuration: TimeInterval = 25 * 60  // 25 minutes
-    static let defaultBreakDuration: TimeInterval = 5 * 60  // 5 minutes
+    static let defaultWorkDuration: TimeInterval = 25 * 60
+    static let defaultBreakDuration: TimeInterval = 5 * 60
     
     // MARK: - Work Duration
     static var workDuration: TimeInterval {

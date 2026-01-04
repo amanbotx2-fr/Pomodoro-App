@@ -19,7 +19,6 @@ struct PomodoroView: View {
 
     var body: some View {
         ZStack {
-            // Background gradient
             LinearGradient(
                 colors: [
                     Color(white: 0.98),
@@ -31,7 +30,6 @@ struct PomodoroView: View {
             .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Top bar with settings button
                 HStack {
                     Spacer()
                     Button(action: {
@@ -50,21 +48,18 @@ struct PomodoroView: View {
                 
                 Spacer()
                 
-                // Main content
                 VStack(spacing: 50) {
-                    // TIMER CIRCLE with mode transition animation
                     CircleTimer(
                         progress: timer.fractionPassed,
                         timeText: timer.secondsLeftString,
                         modeText: timer.mode.title
                     )
-                    .id(timer.mode) // Triggers transition on mode change
+                    .id(timer.mode)
                     .transition(.asymmetric(
                         insertion: .scale(scale: 0.9).combined(with: .opacity),
                         removal: .scale(scale: 1.1).combined(with: .opacity)
                     ))
                     
-                    // Mode indicator badge
                     HStack(spacing: 8) {
                         Circle()
                             .fill(timer.mode == .work ? 
@@ -85,9 +80,7 @@ struct PomodoroView: View {
                     )
                     .animation(.easeInOut(duration: 0.3), value: timer.mode)
                     
-                    // BUTTONS
                     HStack(spacing: 28) {
-                        // Start/Pause/Resume button
                         if timer.state == .idle {
                             CircleButton(
                                 icon: "play.fill",
@@ -136,7 +129,6 @@ struct PomodoroView: View {
                     Spacer()
                         .frame(height: 40)
                     
-                    // NOTIFICATION WARNING
                     if showNotificationWarning {
                         NotificationDisabled {
                             openSettings()
@@ -152,7 +144,6 @@ struct PomodoroView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
                 .onDisappear {
-                    // Update timer with new settings when settings view closes
                     updateTimerWithSettings()
                 }
         }
@@ -161,7 +152,7 @@ struct PomodoroView: View {
             updateTimerWithSettings()
         }
         .onChange(of: timer.mode) { oldValue, newValue in
-            // Optional haptic feedback on mode switch
+            // Light haptic when mode switches
             if timer.state == .idle {
                 let impactFeedback = UIImpactFeedbackGenerator(style: .light)
                 impactFeedback.impactOccurred()
@@ -187,7 +178,6 @@ struct PomodoroView: View {
     }
     
     private func updateTimerWithSettings() {
-        // Only update if timer is idle
         if timer.state == .idle {
             let workDuration = PomodoroSettings.workDuration
             let breakDuration = PomodoroSettings.breakDuration
