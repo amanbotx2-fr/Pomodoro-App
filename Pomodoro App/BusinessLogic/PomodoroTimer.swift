@@ -127,6 +127,15 @@ class PomodoroTimer {
     }
   }
   
+  // Update durations (only allowed when idle)
+  func updateDurations(workInSeconds: TimeInterval, breakInSeconds: TimeInterval) {
+    guard _state == .idle else { return }
+    _durationWork = workInSeconds
+    _durationBreak = breakInSeconds
+    _secondsPassed = 0
+    _fractionPassed = 0
+  }
+  
   
   // MARK: private methods
   private func _createTimer() {
